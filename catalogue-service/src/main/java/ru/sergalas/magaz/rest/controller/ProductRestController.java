@@ -16,6 +16,7 @@ import ru.sergalas.magaz.rest.entity.Product;
 import ru.sergalas.magaz.rest.services.ProductService;
 
 import java.util.Locale;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,11 +24,12 @@ import java.util.Locale;
 public class ProductRestController {
 
     private final ProductService productService;
+    private final MessageSource messageSource;
 
     @ModelAttribute("product")
     public Product getProduct(@PathVariable ("productId") int productId) {
         return this.productService.findProduct(productId)
-                .orElseThrow(() -> new NoSuchMessageException(""));
+                .orElseThrow(() -> new NoSuchElementException(""));
     }
 
     @GetMapping
@@ -37,7 +39,7 @@ public class ProductRestController {
 
     @PatchMapping
     public ResponseEntity<?> updateProduct(
-            @PathVariable("productID") Integer productId,
+            @PathVariable("productId") Integer productId,
             @Valid @RequestBody EditProductPayload payload,
             BindingResult bindingResult
     )  throws BindException  {
@@ -51,5 +53,29 @@ public class ProductRestController {
             this.productService.updateProduct(productId, payload.title(),payload.details());
             return ResponseEntity.noContent().build();
         }
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteProduct(@PathVariable("productId") Integer productId) {
+        this.productService.deleteProduct(productId);
+        return ResponseEntity.noContent().build();
+    }
+
+     @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<ProblemDetail> handleNoSuchElementException(
+            NoSuchElementException exception,
+            Locale locale
+    ) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+            ProblemDetail.forStatusAndDetail(
+                HttpStatus.NOT_FOUND,
+                this.messageSource.getMessage(
+                    exception.getMessage(),
+                    new Object[0],
+                    exception.getMessage(),
+                    locale
+                )
+            )
+        );
     }
 }
