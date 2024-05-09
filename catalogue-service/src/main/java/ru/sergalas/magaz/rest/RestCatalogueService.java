@@ -4,8 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CatalogueService {
+public class RestCatalogueService {
     public static void main(String[] args) {
-        SpringApplication.run(CatalogueService.class,args);
+        SpringApplication.run(RestCatalogueService.class,args);
     }
 }

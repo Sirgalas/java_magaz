@@ -1,15 +1,15 @@
 package ru.sergalas.magaz.web.controlers;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import ru.sergalas.magaz.rest.entity.Product;
-import ru.sergalas.magaz.rest.services.ProductService;
 import ru.sergalas.magaz.web.controlers.payloads.CreateProductPayload;
+import ru.sergalas.magaz.web.entity.Product;
+import ru.sergalas.magaz.web.exeption.BadRequestException;
+import ru.sergalas.magaz.web.services.services.ProductService;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,23 +30,17 @@ public class ProductsController {
 
     @PostMapping("create")
     public String createProduct(
-            @Valid CreateProductPayload payload,
+            CreateProductPayload payload,
             BindingResult bindingResult,
             Model model
     ) {
-        if(bindingResult.hasErrors()) {
-            model.addAttribute("payload",payload);
-            model.addAttribute("errors",
-                    bindingResult
-                        .getAllErrors()
-                        .stream()
-                        .map(ObjectError::getDefaultMessage)
-                        .toList()
-            );
-            return "catalogue/products/new";
-        } else {
+        try{
             Product product = this.productService.createProduct(payload.title(), payload.details());
-            return "redirect:/catalogue/product/%d".formatted(product.getId()) ;
+            return "redirect:/catalogue/product/%d".formatted(product.id());
+        } catch (BadRequestException exception) {
+            model.addAttribute("payload",payload);
+            model.addAttribute("errors", exception.getErrors() );
+            return "catalogue/products/new";
         }
     }
 }

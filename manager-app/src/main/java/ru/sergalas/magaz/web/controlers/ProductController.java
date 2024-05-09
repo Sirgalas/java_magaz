@@ -1,7 +1,7 @@
 package ru.sergalas.magaz.web.controlers;
 
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -10,9 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import ru.sergalas.magaz.rest.entity.Product;
-import ru.sergalas.magaz.rest.services.ProductService;
 import ru.sergalas.magaz.web.controlers.payloads.EditProductPayload;
+import ru.sergalas.magaz.web.entity.Product;
+import ru.sergalas.magaz.web.exeption.BadRequestException;
+import ru.sergalas.magaz.web.services.services.ProductService;
 
 import java.util.Locale;
 import java.util.NoSuchElementException;
@@ -42,28 +43,23 @@ public class ProductController {
     @PostMapping("edit")
     public String editProduct(
         @ModelAttribute( name = "product", binding = false) Product product,
-        @Valid EditProductPayload payload,
+        EditProductPayload payload,
         BindingResult bindingResult,
         Model model
     ) {
-        if(bindingResult.hasErrors()) {
+        try {
+            this.productService.updateProduct(product.id(), payload.title(), payload.details());
+            return "redirect:/catalogue/products/%d".formatted(product.id());
+        } catch (BadRequestException exception) {
             model.addAttribute("payload", payload);
-            model.addAttribute("errors",
-                    bindingResult
-                            .getAllErrors()
-                            .stream()
-                            .map(ObjectError::getDefaultMessage)
-                            .toList()
-            );
+            model.addAttribute("errors", exception.getErrors());
             return "catalogue/products/edit";
         }
-        this.productService.updateProduct(product.getId(), payload.title(), payload.details());
-        return "redirect:/catalogue/products/%d".formatted(product.getId());
     }
 
     @PostMapping("delete")
     public String deleteProduct(@ModelAttribute("product") Product product) {
-        this.productService.deleteProduct(product.getId());
+        this.productService.deleteProduct(product.id());
         return "redirect:/catalogue/products/list";
     }
 
