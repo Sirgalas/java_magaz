@@ -16,7 +16,7 @@ public class DefaultProductService implements ProductService{
 
 
     @Override
-    public List<Product> findAllProducts() {
+    public Iterable <Product> findAllProducts() {
         return this.productRepository.findAll();
     }
 
@@ -27,12 +27,12 @@ public class DefaultProductService implements ProductService{
 
     @Override
     public Optional<Product> findProduct(int productId) {
-        return this.productRepository.findOneById(productId);
+        return this.productRepository.findById(productId);
     }
 
     @Override
     public void updateProduct(Integer id, String title, String details) {
-        this.productRepository.findOneById(id).ifPresentOrElse(product -> {
+        this.productRepository.findById(id).ifPresentOrElse(product -> {
             product.setTitle(title);
             product.setDetails(details);
         }, () -> {

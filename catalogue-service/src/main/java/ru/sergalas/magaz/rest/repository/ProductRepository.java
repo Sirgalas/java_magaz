@@ -1,17 +1,11 @@
 package ru.sergalas.magaz.rest.repository;
 
+import org.springframework.data.repository.CrudRepository;
 import ru.sergalas.magaz.rest.entity.Product;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductRepository {
+public interface ProductRepository extends CrudRepository<Product, Integer> {
 
-    List<Product> findAll();
-
-    Product save(Product product);
-
-    Optional<Product> findOneById(Integer productId);
-
-    void deleteById(Integer id);
 }
