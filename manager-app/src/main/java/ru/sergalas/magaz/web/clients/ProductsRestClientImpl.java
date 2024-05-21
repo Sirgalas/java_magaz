@@ -24,7 +24,12 @@ public class ProductsRestClientImpl implements  ProductsRestClient{
 
     @Override
     public List<Product> findAllProducts() {
-        return this.restClient.get().uri("catalogue/products/list").retrieve().body(PRODUCT_TYPE_REFERENCE);
+        return this
+                .restClient
+                .get()
+                .uri("/catalogue/products")
+                .retrieve()
+                .body(PRODUCT_TYPE_REFERENCE);
     }
 
     @Override

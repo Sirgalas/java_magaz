@@ -1,4 +1,4 @@
-package ru.sergalas.magaz.web.services.services;
+package ru.sergalas.magaz.web.services;
 
 import ru.sergalas.magaz.web.entity.Product;
 
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
-    List<Product> findAllProducts();
+    Iterable<Product> findAllProducts();
 
     Product createProduct(String title, String details);
 

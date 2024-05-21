@@ -23,7 +23,7 @@ public class Product {
     @Size(min = 3, max = 50)
     private String title;
 
-    @Column(name = "details")
+    @Column(name = "detail")
     @Size(max = 1000)
     private String details;
 }

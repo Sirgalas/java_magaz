@@ -2,4 +2,10 @@ server:
   port: 8081
 spring:
   datasource:
-    url:
+    url: jdbc:postgresql://localhost:54325/selpo
+    username: postgres
+    password: postgres
+  flyway:
+    schemas:
+      - public
+      - catalogue

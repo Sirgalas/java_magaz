@@ -1,14 +1,13 @@
-package ru.sergalas.magaz.web.services.services;
+package ru.sergalas.magaz.web.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import ru.sergalas.magaz.web.clients.ProductsRestClient;
-import ru.sergalas.magaz.web.controlers.payloads.CreateProductPayload;
 import ru.sergalas.magaz.web.entity.Product;
 import ru.sergalas.magaz.web.exeption.BadRequestException;
+import ru.sergalas.magaz.web.services.ProductService;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -16,12 +15,12 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 
     final private ProductsRestClient productsRestClient;
 
     @Override
-    public List<Product> findAllProducts() {
+    public Iterable<Product> findAllProducts() {
         return this.productsRestClient.findAllProducts();
     }
 

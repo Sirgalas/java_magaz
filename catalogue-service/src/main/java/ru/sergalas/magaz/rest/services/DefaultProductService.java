@@ -12,8 +12,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class DefaultProductService implements ProductService{
-    private final ProductRepository productRepository;
 
+    private final ProductRepository productRepository;
 
     @Override
     public Iterable <Product> findAllProducts() {
