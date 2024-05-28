@@ -16,38 +16,39 @@ import ru.sergalas.magaz.web.services.ProductService;
 
 import java.util.Locale;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping(("catalogue/products/{productId:\\d+}"))
+@RequiredArgsConstructor
 public class ProductController {
-    private final ProductService productService;
-    private MessageSource messageSource;
+    private final ProductService productsRestClient;
+
+    private final MessageSource messageSource;
 
     @ModelAttribute("product")
     public Product product(@PathVariable("productId") int productId) {
-        return this.productService.findProduct(productId).orElseThrow(() -> new NoSuchElementException("catalogue.errors.products.not_found"));
+        return this.productsRestClient.findProduct(productId)
+                .orElseThrow(() -> new NoSuchElementException("catalogue.errors.product.not_found"));
     }
 
-    @GetMapping()
+    @GetMapping
     public String getProduct() {
-        return "catalogue/product/product";
+        return "catalogue/products/product";
     }
 
     @GetMapping("edit")
-    public String getEditForm() {
-        return "catalogue/product/product";
+    public String getProductEditPage(@ModelAttribute("product") Product product) {
+        return "catalogue/products/edit";
     }
 
     @PostMapping("edit")
-    public String editProduct(
-        @ModelAttribute( name = "product", binding = false) Product product,
-        EditProductPayload payload,
-        BindingResult bindingResult,
-        Model model
-    ) {
+    public String updateProduct(@ModelAttribute(name = "product", binding = false) Product product,
+                                EditProductPayload payload,
+                                Model model) {
         try {
-            this.productService.updateProduct(product.id(), payload.title(), payload.details());
+            this.productsRestClient.updateProduct(product.id(), payload.title(), payload.details());
             return "redirect:/catalogue/products/%d".formatted(product.id());
         } catch (BadRequestException exception) {
             model.addAttribute("payload", payload);
@@ -58,22 +59,17 @@ public class ProductController {
 
     @PostMapping("delete")
     public String deleteProduct(@ModelAttribute("product") Product product) {
-        this.productService.deleteProduct(product.id());
+        this.productsRestClient.deleteProduct(product.id());
         return "redirect:/catalogue/products/list";
     }
 
     @ExceptionHandler(NoSuchElementException.class)
-    public String handleNoSuchElementException(
-            NoSuchElementException exception,
-            Model model,
-            HttpServletResponse response,
-            Locale locale
-    ) {
+    public String handleNoSuchElementException(NoSuchElementException exception, Model model,
+                                               HttpServletResponse response, Locale locale) {
         response.setStatus(HttpStatus.NOT_FOUND.value());
-        model.addAttribute(
-                "error",
-                this.messageSource.getMessage(exception.getMessage(), new Object[0], exception.getMessage(),locale)
-        );
+        model.addAttribute("error",
+                this.messageSource.getMessage(exception.getMessage(), new Object[0],
+                        exception.getMessage(), locale));
         return "errors/404";
     }
 

@@ -22,15 +22,15 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("catalogue/products")
+@RequestMapping("catalogue-api/products")
 public class ProductsRestController {
 
     private final ProductService productService;
 
     @GetMapping
-    public Iterable<Product> findProducts()
+    public Iterable<Product> findProducts(@RequestParam(name= "filter", required = false) String filter)
     {
-        return this.productService.findAllProducts();
+        return this.productService.findAllProducts(filter);
     }
 
     @PostMapping
