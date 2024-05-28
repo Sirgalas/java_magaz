@@ -17,9 +17,9 @@ public class ProductsController {
     private final ProductService productService;
 
     @GetMapping(value = "list")
-    public String getProductList(Model model) {
-        model.addAttribute("products", this.productService.findAllProducts());
-        System.out.println(model);
+    public String getProductList(Model model, @RequestParam(name = "filter", required = false) String filter) {
+        model.addAttribute("products", this.productService.findAllProducts(filter));
+        model.addAttribute("filter", filter);
         return "catalogue/products/list";
     }
 

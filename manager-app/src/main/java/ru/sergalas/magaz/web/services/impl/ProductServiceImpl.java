@@ -20,8 +20,8 @@ public class ProductServiceImpl implements ProductService {
     final private ProductsRestClient productsRestClient;
 
     @Override
-    public Iterable<Product> findAllProducts() {
-        return this.productsRestClient.findAllProducts();
+    public Iterable<Product> findAllProducts(String filter) {
+        return this.productsRestClient.findAllProducts(filter);
     }
 
     @Override

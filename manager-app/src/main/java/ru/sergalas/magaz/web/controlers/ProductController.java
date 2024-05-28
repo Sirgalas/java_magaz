@@ -39,7 +39,7 @@ public class ProductController {
     }
 
     @GetMapping("edit")
-    public String getProductEditPage(@ModelAttribute("product") Product product) {
+    public String getProductEditPage() {
         return "catalogue/products/edit";
     }
 
