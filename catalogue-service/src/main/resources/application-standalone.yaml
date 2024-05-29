@@ -1,6 +1,12 @@
 server:
   port: 8081
 spring:
+  security:
+    user:
+      name: catalogue
+      password: '{noop}password'
+      roles:
+        - SERVICE
   datasource:
     url: jdbc:postgresql://localhost:54325/selpo
     username: postgres

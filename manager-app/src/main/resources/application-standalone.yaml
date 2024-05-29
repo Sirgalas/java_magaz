@@ -2,5 +2,7 @@ magaz:
   service:
     catalogue:
       uri: http://localhost:8081
+      username: catalogue
+      password: password
 server:
   port: 8082
