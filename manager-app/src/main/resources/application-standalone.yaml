@@ -4,5 +4,19 @@ magaz:
       uri: http://localhost:8081
       username: catalogue
       password: password
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:54324/selpo
+    username: postgres
+    password: postgres
+  flyway:
+    schemas:
+      - public
+      - user_management
+  jpa:
+    show-sql: true
+logging:
+  level:
+    sql: info
 server:
   port: 8082
