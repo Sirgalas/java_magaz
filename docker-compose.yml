@@ -11,30 +11,49 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - ./docker/postgres/db:/var/lib/postgresql/data
     ports:
       - "54325:5432"
     networks:
-      - postgresSpring
+      - selmag
   postgres-managers:
     build:
       context: docker
-      dockerfile: postgres/postgres.dockerfile
+      dockerfile: postgres-managers/postgres.dockerfile
     environment:
       POSTGRES_VERSION: ${POSTGRES_VERSION}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - .docker/postgres-managers/db:/var/lib/postgresql/data
     ports:
       - "54324:5432"
     networks:
-      - postgresSpring
+      - selmag
+  keycloak:
+    build:
+      context: docker
+      dockerfile: keycloak/keycloak.dockerfile
+    depends_on:
+      - postgres-managers
+    container_name: local_keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://localhost:54324/selpo
+      KC_DB_USERNAME: ${POSTGRES_USER}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./docker/keycloak/import:/opt/keycloak/data/import
+    ports:
+      - "28080:8080"
+    restart: unless-stopped
+    networks:
+      - selmag
 
 networks:
-  postgresSpring:
+  selmag:
     driver: bridge
 
-volumes:
-  postgres:
