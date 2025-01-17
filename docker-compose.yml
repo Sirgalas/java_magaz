@@ -1,0 +1,78 @@
+version: "3.7"
+
+services:
+  postgres:
+    build:
+      context: docker
+      dockerfile: postgres/postgres.dockerfile
+    environment:
+      POSTGRES_VERSION: ${POSTGRES_VERSION}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ./docker/postgres/db:/var/lib/postgresql/data
+    ports:
+      - "54325:5432"
+    networks:
+      - selmag
+
+  postgres-managers:
+    build:
+      context: docker
+      dockerfile: postgres-managers/postgres.dockerfile
+    environment:
+      POSTGRES_VERSION: ${POSTGRES_VERSION}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ./docker/postgres-managers/db:/var/lib/postgresql/data
+    ports:
+      - "54324:5432"
+    networks:
+      - selmag
+
+  keycloak:
+    build:
+      context: docker
+      dockerfile: keycloak/keycloak.dockerfile
+    depends_on:
+      - postgres-managers
+    container_name: local_keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres-managers:5432/selpo  # Исправленный адрес
+      KC_DB_USERNAME: ${POSTGRES_USER}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./docker/keycloak/import:/opt/keycloak/data/import
+    ports:
+      - "28080:8080"
+    restart: unless-stopped
+    networks:
+      - selmag
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - "28081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+      ME_CONFIG_BASICAUTH: false
+
+networks:
+  selmag:
+    driver: bridge

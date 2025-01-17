@@ -1,0 +1,21 @@
+server:
+  port: 8081
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:28082/realms/selmag
+  datasource:
+    url: jdbc:postgresql://localhost:54325/selpo
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    schemas:
+      - catalogue
+  jpa:
+    show-sql: true
+logging:
+  level:
+    sql: info

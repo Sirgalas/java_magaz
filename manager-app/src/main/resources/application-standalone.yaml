@@ -1,0 +1,27 @@
+magaz:
+  service:
+    catalogue:
+      uri: http://localhost:8081
+      registration-id: keycloak
+spring:
+  logging:
+    level:
+      root: info
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:28080/realms/selmag
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: manager-app
+            client-secret: wTB0L3nUbacYishOMzfpsRmK9R89ijnO
+            scope:
+              - openid
+              - view_catalogue
+              - edit_catalogue
+              - microprofile-jwt
+server:
+  port: 8082
