@@ -25,11 +25,11 @@ public class ProductsRestClientImpl implements  ProductsRestClient{
 
     @Override
     public List<Product> findAllProducts(String filter) {
-        return this.restClient
-            .get()
-            .uri("/catalogue-api/products?filter={filter}", filter)
-            .retrieve()
-            .body(PRODUCT_TYPE_REFERENCE);
+        var client = this.restClient
+                .get()
+                .uri("/catalogue-api/products?filter={filter}", filter)
+                .retrieve();
+            return client.body(PRODUCT_TYPE_REFERENCE);
     }
 
     @Override

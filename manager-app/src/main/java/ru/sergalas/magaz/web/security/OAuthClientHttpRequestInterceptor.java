@@ -1,5 +1,6 @@
 package ru.sergalas.magaz.web.security;
 
+
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +13,9 @@ import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
+
+import java.io.IOException;
 
 import java.io.IOException;
 
@@ -34,7 +38,14 @@ public class OAuthClientHttpRequestInterceptor implements ClientHttpRequestInter
                     OAuth2AuthorizeRequest.withClientRegistrationId(this.registrationId)
                             .principal(this.securityContextHolderStrategy.getContext().getAuthentication())
                             .build());
-            request.getHeaders().setBearerAuth(authorizedClient.getAccessToken().getTokenValue());
+
+            if (authorizedClient != null) {
+                OAuth2AccessToken accessToken = authorizedClient.getAccessToken();
+                request.getHeaders().setBearerAuth(accessToken.getTokenValue());
+                System.out.println("Token added to request: " + accessToken.getTokenValue()); // Логирование
+            } else {
+                System.out.println("Failed to authorize client"); // Логирование
+            }
         }
 
         return execution.execute(request, body);

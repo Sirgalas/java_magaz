@@ -5,17 +5,19 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:28082/realms/selmag
+          issuer-uri: http://localhost:28080/realms/selmag
   datasource:
     url: jdbc:postgresql://localhost:54325/selpo
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
   flyway:
-    schemas:
+    schemas:вщслук
       - catalogue
   jpa:
     show-sql: true
 logging:
   level:
     sql: info
+    org.springframework.web: DEBUG
+    ru.sergalas.magaz: DEBUG

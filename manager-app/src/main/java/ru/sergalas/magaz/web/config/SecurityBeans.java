@@ -24,7 +24,7 @@ public class SecurityBeans {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
             .authorizeHttpRequests(
-                authorizeHttpRequests -> authorizeHttpRequests.anyRequest().hasRole("MANAGER")
+                    authorizeHttpRequests -> authorizeHttpRequests.anyRequest().hasRole("MANAGER")
             )
             .oauth2Login(Customizer.withDefaults())
             .build();
