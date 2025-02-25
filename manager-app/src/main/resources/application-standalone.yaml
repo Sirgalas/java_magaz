@@ -7,7 +7,9 @@ spring:
   logging:
     level:
       root: info
-    org.springframework.security: DEBUG
+      org.springframework.security: DEBUG
+      org.springframework.web: DEBUG
+      ru.sergalas.magaz: DEBUG
   security:
     oauth2:
       client:
@@ -24,5 +26,7 @@ spring:
               - view_catalogue
               - edit_catalogue
               - microprofile-jwt
+            redirect-uri: "{baseUrl}/login/oauth2/code/keycloak"
+            authorization-grant-type: authorization_code
 server:
   port: 8082

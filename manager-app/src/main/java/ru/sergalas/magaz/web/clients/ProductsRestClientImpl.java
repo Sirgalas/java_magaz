@@ -12,6 +12,7 @@ import ru.sergalas.magaz.web.entity.Product;
 import ru.sergalas.magaz.web.exeption.BadRequestException;
 
 import java.lang.reflect.Type;
+import java.security.Principal;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;

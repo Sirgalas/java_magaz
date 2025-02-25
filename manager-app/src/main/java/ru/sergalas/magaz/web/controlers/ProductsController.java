@@ -1,6 +1,7 @@
 package ru.sergalas.magaz.web.controlers;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,6 +11,8 @@ import ru.sergalas.magaz.web.entity.Product;
 import ru.sergalas.magaz.web.exeption.BadRequestException;
 import ru.sergalas.magaz.web.services.ProductService;
 
+import java.security.Principal;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("catalogue/products")
@@ -17,7 +20,9 @@ public class ProductsController {
     private final ProductService productService;
 
     @GetMapping(value = "list")
-    public String getProductList(Model model, @RequestParam(name = "filter", required = false) String filter) {
+    public String getProductList(Model model, @RequestParam(name = "filter", required = false) String filter,
+                                 Principal principal) {
+        LoggerFactory.getLogger(ProductsController.class).info("principal {}", principal);
         model.addAttribute("products", this.productService.findAllProducts(filter));
         model.addAttribute("filter", filter);
         return "catalogue/products/list";
@@ -31,7 +36,6 @@ public class ProductsController {
     @PostMapping("create")
     public String createProduct(
             CreateProductPayload payload,
-            BindingResult bindingResult,
             Model model
     ) {
         try{

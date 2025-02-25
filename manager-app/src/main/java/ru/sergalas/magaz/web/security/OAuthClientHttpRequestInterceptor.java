@@ -3,6 +3,7 @@ package ru.sergalas.magaz.web.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -42,9 +43,9 @@ public class OAuthClientHttpRequestInterceptor implements ClientHttpRequestInter
             if (authorizedClient != null) {
                 OAuth2AccessToken accessToken = authorizedClient.getAccessToken();
                 request.getHeaders().setBearerAuth(accessToken.getTokenValue());
-                System.out.println("Token added to request: " + accessToken.getTokenValue()); // Логирование
+                LoggerFactory.getLogger(OAuthClientHttpRequestInterceptor.class).error("Token added to request: {}", accessToken.getTokenValue()); // Логирование
             } else {
-                System.out.println("Failed to authorize client"); // Логирование
+                LoggerFactory.getLogger(OAuthClientHttpRequestInterceptor.class).error("Failed to authorize client");// Логирование
             }
         }
 
