@@ -17,7 +17,7 @@ import ru.sergalas.magaz.web.services.impl.ProductServiceImpl;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.notNull;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Модульные тесты ProductController")
@@ -25,11 +25,10 @@ class ProductsControllerTest {
 
     @Mock
     ProductsRestClient productsRestClient;
+    @Mock
+    ProductServiceImpl productService;
     @InjectMocks
-    ProductService productService;
-
-
-    ProductsController controller = new ProductsController(this.productService);
+    ProductsController controller;
 
 
     @Test
@@ -40,12 +39,14 @@ class ProductsControllerTest {
         var model = new ConcurrentModel();
 
         doReturn(new Product(1,"Новый товар","Описание нового товара"))
-                .when(this.productsRestClient)
-                .createProduct(notNull(),any());
+                .when(this.productService)
+                .createProduct("Новый товар","Описание нового товара");
         //when
             var result = this.controller.createProduct(payload,model);
         //then
         assertEquals("redirect:/catalogue/products/1", result);
+        verify(this.productService).createProduct("Новый товар","Описание нового товара");
+        verifyNoMoreInteractions(this.productsRestClient);
     }
   
 }
