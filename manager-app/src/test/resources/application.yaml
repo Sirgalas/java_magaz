@@ -1,0 +1,5 @@
+magaz:
+  service:
+    catalogue:
+      uri: http://localhost:54321
+      registration-id: keycloak
