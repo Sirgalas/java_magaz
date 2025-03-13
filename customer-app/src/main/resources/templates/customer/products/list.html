@@ -6,12 +6,19 @@
 </head>
 <body>
 <h1> Наши товары </h1>
+<form>
+    <label>
+        Фильтер
+        <input type="text" name="filter" th:value="${filter}">
+        <button type="submit">Поиск</button>
+    </label>
+</form>
 <ul>
     <li data-th-each="product : ${products}">
         <strong>
-            <a data-th-text="${product.name}" data-th-href="@{/customer/products/{productId}(productId = ${product.id})}">ссылка</a>
+            <a th:text="${product.title}" data-th-href="@{/customer/product/{productId}(productId = ${product.id})}">product.name</a>
         </strong>
-        <p data-th-text="product.details"></p>
+        <p th:text="${product.details}">product.details</p>
 
     </li>
 </ul>

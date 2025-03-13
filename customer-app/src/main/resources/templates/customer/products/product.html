@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>[[${product.title}]] &ndash; Сельмаг</title>
+</head>
+<body>
+<a data-th-href="@{/customer/products/list}" >К списку товаров</a>
+<h1 th:text="${product.title}">Название товара</h1>
+<p th:text="${product.details}">Описание товара</p>
+</body>
