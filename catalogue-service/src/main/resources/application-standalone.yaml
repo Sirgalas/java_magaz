@@ -12,7 +12,7 @@ spring:
     password: postgres
     driver-class-name: org.postgresql.Driver
   flyway:
-    schemas:вщслук
+    schemas:
       - catalogue
   jpa:
     show-sql: true

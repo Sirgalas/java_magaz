@@ -8,4 +8,44 @@
 <a data-th-href="@{/customer/products/list}" >К списку товаров</a>
 <h1 th:text="${product.title}">Название товара</h1>
 <p th:text="${product.details}">Описание товара</p>
+<form
+        method="post"
+        data-th-action="@{/customer/product/{productId}/add-to-favourites(productId=${product.id})}"
+        data-th-if="${!inFavorite}"
+>
+    <button type="submit">Добавить в избранное</button>
+</form>
+<form
+        method="post"
+        data-th-action="@{/customer/product/{productId}/delete-from-favourites(productId=${product.id})}"
+        data-th-if="${inFavorite}"
+>
+    <button type="submit">Удалить из избранного</button>
+</form>
+<h2>Отзывы</h2>
+<div data-th-if="${errors}">
+    <h3></h3>
+    <ul>
+        <li data-th-each="error : ${errors}" th:text="${error}"></li>
+    </ul>
+</div>
+<form method="post"
+      data-th-action="@{/customer/product/{productId}/create-review(productId=${product.id})}" >
+    <label><input type="radio" name="rating" value="1">1</label>
+    <label><input type="radio" name="rating" value="2">2</label>
+    <label><input type="radio" name="rating" value="3">3</label>
+    <label><input type="radio" name="rating" value="4">4</label>
+    <label><input type="radio" name="rating" value="5">5</label>
+    <br/>
+    <label>
+        Отзыв<br/>
+        <textarea name="review"></textarea>
+    </label>
+    <br/>
+    <button type="submit">Сохранить</button>
+</form>
+<div data-th-each="review : ${reviews}">
+    <h3>[[${review.rating}]]*</h3>
+    <p th:text="${review.review}">review</p>
+</div>
 </body>

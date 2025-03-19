@@ -2,6 +2,7 @@ package ru.sergalas.customer.client.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.sergalas.customer.client.ProductsClient;
@@ -27,6 +28,7 @@ public class WebClientProductsClient implements ProductsClient {
                         .path("/catalogue-api/products/{productId}")
                         .build(productId))
                 .retrieve()
-                .bodyToMono(Product.class);
+                .bodyToMono(Product.class)
+                .onErrorComplete(WebClientResponseException.NotFound.class);
     }
 }
