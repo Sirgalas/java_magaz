@@ -1,20 +1,6 @@
 package ru.sergalas.customer.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.UUID;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ProductReview {
-    private UUID id;
-
-    private Integer productId;
-
-    private Integer rating;
-
-    private String review;
+public record ProductReview(UUID id, Integer productId, Integer rating, String review) {
 }

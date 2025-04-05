@@ -1,12 +1,16 @@
 package ru.sergalas.customer.client.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ProblemDetail;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.sergalas.customer.client.ProductsClient;
+import ru.sergalas.customer.client.exeception.ClientBadRequestException;
 import ru.sergalas.customer.entity.Product;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 public class WebClientProductsClient implements ProductsClient {
@@ -29,6 +33,13 @@ public class WebClientProductsClient implements ProductsClient {
                         .build(productId))
                 .retrieve()
                 .bodyToMono(Product.class)
-                .onErrorComplete(WebClientResponseException.NotFound.class);
+                .onErrorComplete(WebClientResponseException.NotFound.class)
+                .onErrorMap(
+                    WebClientResponseException.BadRequest.class,
+                    ex -> new ClientBadRequestException(
+                        ex,
+                        ((List<String>) ex.getResponseBodyAs(ProblemDetail.class).getProperties().get("errors"))
+                    )
+                );
     }
 }

@@ -1,8 +1,8 @@
-package ru.sergalas.customer.repository;
+package ru.sergalas.feedback.repository;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import ru.sergalas.customer.entity.FavoriteProduct;
+import ru.sergalas.feedback.entity.FavoriteProduct;
 
 public interface FavoriteProductRepository {
     Mono<FavoriteProduct> save(FavoriteProduct favoriteProduct);

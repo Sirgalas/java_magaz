@@ -1,10 +1,10 @@
-package ru.sergalas.customer.repository.impl;
+package ru.sergalas.feedback.repository.impl;
 
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import ru.sergalas.customer.entity.FavoriteProduct;
-import ru.sergalas.customer.repository.FavoriteProductRepository;
+import ru.sergalas.feedback.entity.FavoriteProduct;
+import ru.sergalas.feedback.repository.FavoriteProductRepository;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -13,8 +13,8 @@ import java.util.List;
 @Repository
 public class inMemoryFavoriteProductRepositoryImpl implements FavoriteProductRepository {
 
-    private final List<FavoriteProduct> favoriteProducts = Collections.synchronizedList(new LinkedList<FavoriteProduct>());
 
+    private final List<FavoriteProduct> favoriteProducts = Collections.synchronizedList(new LinkedList<FavoriteProduct>());
     @Override
     public Mono<FavoriteProduct> save(FavoriteProduct favoriteProduct) {
         this.favoriteProducts.add(favoriteProduct);

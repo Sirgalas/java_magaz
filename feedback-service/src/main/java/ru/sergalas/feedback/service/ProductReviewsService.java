@@ -1,8 +1,8 @@
-package ru.sergalas.customer.services;
+package ru.sergalas.feedback.service;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import ru.sergalas.customer.entity.ProductReview;
+import ru.sergalas.feedback.entity.ProductReview;
 
 public interface ProductReviewsService {
 

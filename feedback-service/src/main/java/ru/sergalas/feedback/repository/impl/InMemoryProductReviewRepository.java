@@ -1,12 +1,11 @@
-package ru.sergalas.customer.repository.impl;
+package ru.sergalas.feedback.repository.impl;
 
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import ru.sergalas.customer.entity.ProductReview;
-import ru.sergalas.customer.repository.ProductReviewRepository;
+import ru.sergalas.feedback.entity.ProductReview;
+import ru.sergalas.feedback.repository.ProductReviewRepository;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;

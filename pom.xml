@@ -9,6 +9,8 @@
 	<modules>
 		<module>manager-app</module>
         <module>catalogue-service</module>
+		<module>customer-app</module>
+		<module>feedback-service</module>
     </modules>
 	<properties>
 		<java.version>21</java.version>

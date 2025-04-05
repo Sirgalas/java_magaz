@@ -1,12 +1,12 @@
-package ru.sergalas.customer.services.impl;
+package ru.sergalas.feedback.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import ru.sergalas.customer.entity.FavoriteProduct;
-import ru.sergalas.customer.repository.FavoriteProductRepository;
-import ru.sergalas.customer.services.FavoriteProductsService;
+import ru.sergalas.feedback.entity.FavoriteProduct;
+import ru.sergalas.feedback.repository.FavoriteProductRepository;
+import ru.sergalas.feedback.service.FavoriteProductsService;
 
 import java.util.UUID;
 
