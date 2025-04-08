@@ -2,6 +2,9 @@ package ru.sergalas.feedback.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
@@ -23,10 +26,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ProductReviewsRestController {
     private final ProductReviewsService service;
+    private final ReactiveMongoTemplate mongoTemplate;
 
     @GetMapping("by-product-id/{productId:\\d+}")
     public Flux<ProductReview> findProductReviewsByProductId(@PathVariable Integer productId) {
-        return this.service.findProductReviewsByProductId(productId);
+        return this.mongoTemplate.find(
+            Query.query(Criteria.where("productId").is(productId)),
+            ProductReview.class
+        );
     }
 
     @PostMapping
@@ -38,7 +45,7 @@ public class ProductReviewsRestController {
             .flatMap(payload -> this.service.createProductReview(
                 payload.productId(),
                 payload.rating(),
-                payload.reviews()
+                payload.review()
             ).map(productReview -> ResponseEntity
                 .created(
                     uriComponentsBuilder

@@ -1,15 +1,16 @@
 package ru.sergalas.feedback.repository;
 
-import reactor.core.publisher.Flux;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 import ru.sergalas.feedback.entity.FavoriteProduct;
 
-public interface FavoriteProductRepository {
-    Mono<FavoriteProduct> save(FavoriteProduct favoriteProduct);
+import java.util.UUID;
+
+public interface FavoriteProductRepository extends ReactiveCrudRepository<FavoriteProduct, UUID> {
 
     Mono<Void> deleteByProductId(Integer productId);
 
     Mono<FavoriteProduct> findByProductId(Integer productId);
 
-    Flux<FavoriteProduct> findAll();
 }

@@ -1,0 +1,11 @@
+server:
+  port: 8084
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 8085
+      database: feedback
+      username: root
+      password: example
+      authentication-database: admin

@@ -31,7 +31,7 @@ public class WebClientFavoriteProductsClientImpl implements FavoriteProductsClie
     @Override
     public Mono<FavoriteProduct> addProductToFavorites(Integer id) {
         return this.webClient.post()
-            .uri("/feedback-api/favorite-products/by-product-id/")
+            .uri("/feedback-api/favorite-products/by-product-id")
             .bodyValue(new NewFavoriteProductPayload(id))
             .retrieve()
             .bodyToMono(FavoriteProduct.class)
