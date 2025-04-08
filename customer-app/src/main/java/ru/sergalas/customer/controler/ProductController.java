@@ -76,12 +76,17 @@ public class ProductController {
             ) {
         return this.productReviewsClient.createProductReview(productId,payload)
             .thenReturn("redirect:/customer/product/%d".formatted(productId))
-            .onErrorResume(ClientBadRequestException.class, exception -> {
-                model.addAttribute("errors", exception.getErrorMessages());
-                model.addAttribute("inFavorite", false);
-                return this.favoriteProductsService.findFavoriteProductByProductId(productId)
-                    .doOnNext(favoriteProducts -> model.addAttribute("inFavorite", true))
-                    .thenReturn("customer/products/product");
+            .onErrorResume(
+                ClientBadRequestException.class,
+                exception -> {
+                    log.error(exception.getMessage(), exception);
+                    model.addAttribute("errors", exception.getErrorMessages());
+                    model.addAttribute("inFavorite", false);
+                    return this.
+                        favoriteProductsService
+                        .findFavoriteProductByProductId(productId)
+                        .doOnNext(favoriteProducts -> model.addAttribute("inFavorite", true))
+                        .thenReturn("customer/products/product");
             });
     }
 
