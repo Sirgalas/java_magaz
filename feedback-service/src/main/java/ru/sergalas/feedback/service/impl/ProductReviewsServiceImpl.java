@@ -17,8 +17,8 @@ public class ProductReviewsServiceImpl implements ProductReviewsService {
     private final ProductReviewRepository productReviewRepository;
 
     @Override
-    public Mono<ProductReview> createProductReview(Integer productId, Integer rating, String review) {
-        return this.productReviewRepository.save(new ProductReview(UUID.randomUUID(), productId, rating, review));
+    public Mono<ProductReview> createProductReview(Integer productId, Integer rating, String review, String userId) {
+        return this.productReviewRepository.save(new ProductReview(UUID.randomUUID(), productId, rating, review, userId));
     }
 
     @Override

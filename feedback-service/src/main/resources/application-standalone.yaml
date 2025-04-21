@@ -9,3 +9,13 @@ spring:
       username: root
       password: example
       authentication-database: admin
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:28080/realms/selmag
+logging:
+  level:
+    sql: info
+    org.springframework.web: DEBUG
+    ru.sergalas.magaz: DEBUG

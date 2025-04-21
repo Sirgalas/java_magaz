@@ -6,11 +6,11 @@ import ru.sergalas.feedback.entity.FavoriteProduct;
 
 public interface FavoriteProductsService {
 
-    public Mono<FavoriteProduct> addProductToFavorites(Integer productId);
+    public Mono<FavoriteProduct> addProductToFavorites(Integer productId, String userId);
 
-    Mono<Void> removeProductFromFavorites(Integer productId);
+    Mono<Void> removeProductFromFavorites(Integer productId, String userId);
 
-    Mono<FavoriteProduct> findFavoriteProductByProduct(Integer productId);
+    Mono<FavoriteProduct> findFavoriteProductByProduct(Integer productId, String UserId);
 
-    Flux<FavoriteProduct> findFavoriteProducts();
+    Flux<FavoriteProduct> findFavoriteProducts(String userId);
 }

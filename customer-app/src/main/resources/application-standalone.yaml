@@ -9,3 +9,21 @@ server:
 logging:
   level:
     root: info
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: customer-app
+            client-secret: H5jSA2SwfDHWl7BDRXCnosW8jct4wK7r
+            scope:
+              - openid
+              - view_catalogue
+            redirect-uri: "{baseUrl}/login/oauth2/code/keycloak"
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:28080/realms/selmag
+            user-name-attribute: preferred_username

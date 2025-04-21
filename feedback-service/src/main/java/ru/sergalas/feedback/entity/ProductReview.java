@@ -21,4 +21,6 @@ public class ProductReview {
     private Integer rating;
 
     private String review;
+
+    private String userId;
 }
