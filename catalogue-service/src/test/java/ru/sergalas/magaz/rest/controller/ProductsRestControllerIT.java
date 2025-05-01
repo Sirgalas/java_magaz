@@ -1,4 +1,4 @@
-package ru.sergalas.magaz.rest.controllers;
+package ru.sergalas.magaz.rest.controller;
 
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -48,9 +48,9 @@ public class ProductsRestControllerIT {
                                 "details": "Описание товара №1"
                              },
                              {
-                                "id": 2,
-                                "title": "Товар №2",
-                                "details": "Описание товара №2"
+                                "id": 3,
+                                "title": "Товар №3",
+                                "details": "Описание товара №3"
                              }
                         ]""")
                 );

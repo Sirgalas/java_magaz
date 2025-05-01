@@ -2,6 +2,8 @@ package ru.sergalas.customer.controler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.security.web.reactive.result.view.CsrfRequestDataValueProcessor;
 import org.springframework.stereotype.Controller;
@@ -32,8 +34,11 @@ public class ProductController {
     @ModelAttribute(name = "product", binding = false)
     public Mono<Product> getProduct(@PathVariable("productId") int productId) {
         return productsClient.findProductById(productId)
-                .doOnNext(body -> log.error("product: {}",body))
-                .switchIfEmpty(Mono.error(new NoSuchElementException("customer.products.error.not_found")));
+            .doOnNext(body -> log.error("product: {}",body))
+            .switchIfEmpty(Mono.defer(
+                    ()->Mono.error(new NoSuchElementException("customer.products.error.not_found"))
+                )
+            );
     }
 
     @GetMapping
@@ -94,8 +99,14 @@ public class ProductController {
     }
 
     @ExceptionHandler(NoSuchElementException.class)
-    public String handleNoSuchElementException(NoSuchElementException e, Model model) {
+    public String handleNoSuchElementException(
+            NoSuchElementException e,
+            Model model,
+            ServerHttpResponse response
+    ) {
+
         model.addAttribute("error", e.getMessage());
+        response.setStatusCode(HttpStatus.NOT_FOUND);
         return "errors/404";
     }
 

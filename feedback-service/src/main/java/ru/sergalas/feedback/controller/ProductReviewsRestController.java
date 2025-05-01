@@ -6,22 +6,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.sergalas.feedback.entity.ProductReview;
 import ru.sergalas.feedback.payload.NewProductReviewPayload;
 import ru.sergalas.feedback.service.ProductReviewsService;
-
-import java.security.Principal;
 import java.util.Map;
 
 @RestController
@@ -37,11 +30,7 @@ public class ProductReviewsRestController {
             @PathVariable Integer productId,
             Mono<JwtAuthenticationToken> principalMono
     ) {
-        return principalMono.flatMapMany(principal -> {
-                log.info("Principal {}", principal);
-                return this.mongoTemplate.find(Query.query(Criteria.where("productId").is(productId)), ProductReview.class);
-            }
-        );
+        return principalMono.flatMapMany(principal -> this.mongoTemplate.find(Query.query(Criteria.where("productId").is(productId)), ProductReview.class));
 
     }
 
@@ -65,7 +54,6 @@ public class ProductReviewsRestController {
                             .build(
                                 Map.of("id",productReview.getId())
                             )
-
                 ).
                 body(productReview)
             )
