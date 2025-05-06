@@ -1,0 +1,8 @@
+= REST docs
+
+== Java magaz
+.Тело ответа
+include::{snippets}/catalogue/products/find_all/response-body.adoc[]
+
+.Свойство ответа
+include::{snippets}/catalogue/products/find_all/response-fields.adoc[]

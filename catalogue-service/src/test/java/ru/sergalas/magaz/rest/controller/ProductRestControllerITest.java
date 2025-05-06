@@ -9,10 +9,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.operation.preprocess.HeadersModifyingOperationPreprocessor;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -22,6 +28,8 @@ import static org.springframework.web.servlet.function.RequestPredicates.content
 @Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs
+@ExtendWith(RestDocumentationExtension.class)
 class ProductRestControllerITest {
 
     @Autowired
@@ -49,7 +57,19 @@ class ProductRestControllerITest {
                     "details": "Описание товара №1"
                   }
                 """)
-            );
+            )
+                .andDo(document("catalogue/products/find_all",
+                    preprocessResponse(
+                        prettyPrint(),
+                        new HeadersModifyingOperationPreprocessor().remove("Vary")
+                    ),
+                    responseFields(
+                        fieldWithPath("id").description("Идентификатор товара").type("int"),
+                        fieldWithPath("title").description("Название товара").type("string"),
+                        fieldWithPath("details").description("Описание товара").type("string")
+
+                    )
+                ));
     }
 
     @Test
