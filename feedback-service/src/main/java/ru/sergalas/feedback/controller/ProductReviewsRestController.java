@@ -1,5 +1,9 @@
 package ru.sergalas.feedback.controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +11,7 @@ import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -26,9 +31,14 @@ public class ProductReviewsRestController {
     private final ReactiveMongoTemplate mongoTemplate;
 
     @GetMapping("by-product-id/{productId:\\d+}")
+    @Operation(
+            security = @SecurityRequirement(name = "keycloak"),
+            parameters = {
+            @Parameter(name = "productId", description = "ID товара", example = "123", required = true)}
+    )
     public Flux<ProductReview> findProductReviewsByProductId(
             @PathVariable Integer productId,
-            Mono<JwtAuthenticationToken> principalMono
+            @Parameter(hidden = true) Mono<JwtAuthenticationToken> principalMono
     ) {
         return principalMono.flatMapMany(principal -> this.mongoTemplate.find(Query.query(Criteria.where("productId").is(productId)), ProductReview.class));
 

@@ -21,3 +21,10 @@ logging:
     sql: info
     org.springframework.web: DEBUG
     ru.sergalas.magaz: DEBUG
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: catalogue-service-swagger-ui
+      use-pkce-with-authorization-code-grant: true
+keycloak:
+  uri: http://localhost:28080

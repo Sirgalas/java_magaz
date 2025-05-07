@@ -19,3 +19,16 @@ logging:
     sql: info
     org.springframework.web: DEBUG
     ru.sergalas.magaz: DEBUG
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: feedback-service-swagger-ui
+      use-pkce-with-authorization-code-grant: true
+  default-consumes-media-type: application/json
+  model-and-view-allowed: false
+  show-oauth2-endpoints: true
+  ignored-parameter-types:
+    - org.springframework.security.core.annotation.AuthenticationPrincipal
+    - reactor.core.publisher.Mono
+keycloak:
+  uri: http://localhost:28080
