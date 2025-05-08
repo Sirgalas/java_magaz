@@ -1,6 +1,14 @@
 server:
   port: 8084
 spring:
+  boot:
+    admin:
+      client:
+        url: http://localhost:8086
+        instance:
+          name: feedback-service
+          service-host-type: ip
+        enabled: true
   data:
     mongodb:
       host: localhost
@@ -14,6 +22,17 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:28080/realms/selmag
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:28080/realms/selmag
+        registration:
+          keycloak:
+            client-id: feedback-metrics-client
+            client-secret: 1qIKlTtW9O9SaqFnkw6ymox5DCavsI5A
+            authorization-grant-type: client_credentials
+            scope:
+              - metrics_server
 logging:
   level:
     sql: info
@@ -32,3 +51,13 @@ springdoc:
     - reactor.core.publisher.Mono
 keycloak:
   uri: http://localhost:28080
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"

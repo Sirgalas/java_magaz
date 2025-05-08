@@ -11,6 +11,7 @@
         <module>catalogue-service</module>
 		<module>customer-app</module>
 		<module>feedback-service</module>
+		<module>admin-service</module>
     </modules>
 	<properties>
 		<java.version>21</java.version>

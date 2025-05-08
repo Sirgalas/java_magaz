@@ -1,11 +1,30 @@
 server:
   port: 8081
 spring:
+  boot:
+    admin:
+      client:
+        enabled: true
+        instance:
+          name: catalogue-service
+          service-host-type: ip
+        url: http://localhost:8086
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:28080/realms/selmag
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:28080/realms/selmag
+        registration:
+          keycloak:
+            client-id: catalogue-metrics-client
+            client-secret: YAuw0JTX1xQAfNtyMsca6OStIlfF1jJI
+            authorization-grant-type: client_credentials
+            scope:
+              - metrics_server
   datasource:
     url: jdbc:postgresql://localhost:54325/selpo
     username: postgres
@@ -28,3 +47,13 @@ springdoc:
       use-pkce-with-authorization-code-grant: true
 keycloak:
   uri: http://localhost:28080
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
